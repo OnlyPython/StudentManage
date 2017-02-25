@@ -1,0 +1,10 @@
+eclipse.preferences.version=1
+encoding//WebContent/addStudent.html=UTF-8
+encoding//src/dao/StudentDaoJdbcImpl.java=UTF-8
+encoding//src/dao/StudentDaoMysqlImpl.java=UTF-8
+encoding//src/dao/StudentDaoPgImpl.java=UTF-8
+encoding//src/utils/DbSourceImpl.java=UTF-8
+encoding//src/web/student/StudentAddServlet.java=UTF-8
+encoding//src/web/student/StudentUpdateServlet.java=UTF-8
+encoding//src/web/user/UserLoginServlet.java=UTF-8
+encoding/<project>=UTF-8

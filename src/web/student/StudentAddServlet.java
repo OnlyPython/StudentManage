@@ -2,21 +2,18 @@ package web.student;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.ApplicationContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import service.StudentService;
-import web.CommonListener;
 import entity.Student;
+import service.StudentService;
 
 /**
  * Servlet implementation class AddStudentServlet
@@ -25,7 +22,9 @@ import entity.Student;
 public class StudentAddServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private StudentService studentService;
-
+    
+    private static Logger logger = LoggerFactory.getLogger(StudentAddServlet.class);
+    
 	public void setStudentService(StudentService studentService) {
 		this.studentService = studentService;
 	}
@@ -49,6 +48,7 @@ public class StudentAddServlet extends HttpServlet {
 		if(isSuccess){
 			response.sendRedirect(request.getServletContext().getAttribute("ctx")+"/student/student-list");	
 		}else{
+			logger.error("保存失败");
 			writer.println("保存失败<br/>");
 		}
 		writer.println("<a href = \"addStudent.html\">添加页面</a>");

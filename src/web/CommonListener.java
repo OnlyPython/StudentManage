@@ -22,16 +22,20 @@ public class CommonListener implements ServletContextListener {
     		//在servletContext中加入服务器url路径，这样会将整个项目的url路径统一
     		ServletContext servletContext =arg0.getServletContext();
     		servletContext.setAttribute("ctx", servletContext.getContextPath());
+    		
+    		//给log4j指定日志文件的输出路径
+    		System.setProperty("webAppHome", arg0.getServletContext().getRealPath("/WEB-INF"));
+    		
     		//将Spring容器放入servletContext中
     		ApplicationContext app = new ClassPathXmlApplicationContext("application.xml");
     		servletContext.setAttribute(APPLICATION_ATTRIBUTE, app);
+    		
     }
 
 	/**
      * @see ServletContextListener#contextDestroyed(ServletContextEvent)
      */
     public void contextDestroyed(ServletContextEvent arg0) {
-        // TODO Auto-generated method stub
     }
 	
 }

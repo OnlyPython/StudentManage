@@ -45,7 +45,7 @@ public class UserLoginServlet extends HttpServlet {
 			}
 		}
 		
-		request.getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+		request.getServletContext().getRequestDispatcher("/WEB-INF/page/user/login.jsp").forward(request, response);
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class UserLoginServlet extends HttpServlet {
 		}else{
 			request.setAttribute("loginFail","用户名或密码错误");
 			//forward : 请求转发，将req，rep交给另一个Servlet处理（url不变）
-			request.getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+			request.getServletContext().getRequestDispatcher("/WEB-INF/page/user/login.jsp").forward(request, response);
 		}
 	}
 

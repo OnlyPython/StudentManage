@@ -8,7 +8,7 @@ import java.util.Properties;
 import utils.DbSourceImpl;
 import utils.Page;
 import dao.StudentDao;
-import dao.StudentDaoMysqlImpl;
+import dao.impl.StudentDaoMysqlImpl;
 import entity.Student;
 
 public class StudentService {
@@ -22,18 +22,18 @@ public class StudentService {
 		this.studentDao = studentDao;
 	}
 
-	public StudentService(){
-		Properties pro = new Properties();
-
-		try (InputStream input = DbSourceImpl.class.getResourceAsStream("/common.properties")) {
-			pro.load(input);
-			String studentDaoName = pro.getProperty("StudentDao");
-			Class<?> claz = Class.forName(studentDaoName);
-			studentDao = (StudentDao) claz.newInstance();
-		} catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e1) {
-			e1.printStackTrace();
-		}
-	}
+//	public StudentService(){
+//		Properties pro = new Properties();
+//
+//		try (InputStream input = DbSourceImpl.class.getResourceAsStream("/common.properties")) {
+//			pro.load(input);
+//			String studentDaoName = pro.getProperty("StudentDao");
+//			Class<?> claz = Class.forName(studentDaoName);
+//			studentDao = (StudentDao) claz.newInstance();
+//		} catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e1) {
+//			e1.printStackTrace();
+//		}
+//	}
 	public boolean saveOrUpdateStudent(Student student){
 		if(student.getId()==null&&studentDao.isEntityExists(student.getName())){
 			return false;

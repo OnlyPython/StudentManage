@@ -51,7 +51,7 @@ public class StudentListServlet extends HttpServlet {
 //			List<Student> studentList = this.studentService.searchByName(studentName);
 //			request.setAttribute("students", studentList);
 //		}
-		request.getServletContext().getRequestDispatcher("/WEB-INF/Student-List.jsp").forward(request, response);
+		request.getServletContext().getRequestDispatcher("/WEB-INF/page/student/Student-List.jsp").forward(request, response);
 
 	}
 

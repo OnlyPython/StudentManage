@@ -61,7 +61,7 @@ public class StudentAddServlet extends HttpServlet {
 			request.setAttribute("student", student);
 			request.setAttribute("update_operate", true);
 		}
-		request.getServletContext().getRequestDispatcher("/WEB-INF/Student-Add.jsp").forward(request, response);
+		request.getServletContext().getRequestDispatcher("/WEB-INF/page/student/Student-Add.jsp").forward(request, response);
 	}
 
 }

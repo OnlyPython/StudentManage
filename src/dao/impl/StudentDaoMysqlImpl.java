@@ -1,4 +1,4 @@
- package dao;
+ package dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,10 +9,11 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import dao.StudentDao;
 import utils.DbSource;
 import entity.Student;
 
-public class StudentDaoPgImpl implements StudentDao {
+public class StudentDaoMysqlImpl implements StudentDao {
 	private DbSource dbs;
 	public DbSource getDbs() {
 		return dbs;

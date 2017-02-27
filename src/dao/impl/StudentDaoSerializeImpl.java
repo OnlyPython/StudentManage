@@ -1,11 +1,10 @@
-package dao;
+package dao.impl;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
+import dao.StudentDao;
 import entity.Student;
 
 public class StudentDaoSerializeImpl implements StudentDao {

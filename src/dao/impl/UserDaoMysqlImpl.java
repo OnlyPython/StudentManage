@@ -1,4 +1,4 @@
-package dao;
+package dao.impl;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import com.mysql.jdbc.PreparedStatement;
 
+import dao.UserDao;
 import entity.User;
 import utils.DbSource;
 import utils.DbSourceImpl;

@@ -2,24 +2,24 @@ package web.student;
 
 import java.io.IOException;
 
-import javax.servlet.ServletConfig;
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
 import service.StudentService;
-import web.CommonListener;
 
 /**
  * Servlet implementation class StudentDelete
  */
 //@WebServlet("/student/student-delete")
+@Component("student/student-delete")
 public class StudentDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	@Resource
 	private StudentService studentService;
 
 	public void setStudentService(StudentService studentService) {

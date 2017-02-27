@@ -7,6 +7,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import org.springframework.stereotype.Component;
+@Component("dbSource")
 public class DbSourceImpl implements DbSource {
 	
 	static Properties pro = new Properties();

@@ -2,27 +2,27 @@ package web.student;
 
 import java.io.IOException;
 
-import javax.servlet.ServletConfig;
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
+import entity.Student;
 import service.StudentService;
 import utils.Page;
-import web.CommonListener;
-import entity.Student;
 
 /**
  * Servlet implementation class StudentListServlet
  */
 //@WebServlet("/student/student-list")
+@Component("student/student-list")
 public class StudentListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	@Resource
     private StudentService studentService;
     
 

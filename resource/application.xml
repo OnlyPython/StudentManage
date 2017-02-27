@@ -2,22 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:p="http://www.springframework.org/schema/p"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-	<!-- Student bean -->
-	<bean id="dbSource" class="utils.DbSourceImpl"></bean>
-	<bean id="studentDao" class="dao.impl.StudentDaoPgImpl">
-		<property name ="dbSource" ref="dbSource"/>
-	</bean>
-	<bean id="studentService" class="service.StudentService">
-		<property name ="studentDao" ref="studentDao"/>
-	</bean>
-	<!-- User bean -->
-	<bean id="userService" class="service.UserService" p:userDao-ref="userDao">
-	</bean>
-	<bean id="userDao" class="dao.impl.UserDaoPgImpl" p:dbSource-ref="dbSource"></bean>
-	<bean name="student/student-add" class="web.student.StudentAddServlet" p:studentService-ref="studentService"/>
-	<bean name="student/student-delete" class="web.student.StudentDeleteServlet" p:studentService-ref="studentService"/>
-	<bean name="student/student-list" class="web.student.StudentListServlet" p:studentService-ref="studentService"/>
-	<bean name="user/login" class="web.user.UserLoginServlet" p:userService-ref="userService"/>
-	<bean name="user/logout" class="web.user.UserLogoutServlet"/>
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+	
+	<context:component-scan base-package="/"></context:component-scan>
+	
 </beans>

@@ -5,13 +5,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import dao.DaoException;
 import dao.UserDao;
 import entity.User;
 import utils.DbSource;
 import utils.DbSourceImpl;
 
+@Repository("userDao")
 public class UserDaoPgImpl implements UserDao {
+	@Autowired
 	private DbSource dbs = new DbSourceImpl();
 	@Override
 	public void setDbSource(DbSource dbSource) {

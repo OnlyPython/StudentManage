@@ -1,17 +1,18 @@
 package service;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import java.util.Properties;
 
-import utils.DbSourceImpl;
-import utils.Page;
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
 import dao.StudentDao;
-import dao.impl.StudentDaoMysqlImpl;
 import entity.Student;
+import utils.Page;
 
+@Service
 public class StudentService {
+	@Resource
 	private StudentDao studentDao;
 	
 	public StudentDao getStudentDao() {

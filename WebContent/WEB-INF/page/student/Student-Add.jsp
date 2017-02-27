@@ -7,7 +7,7 @@
 <title>Student-Add </title>
 </head>
 <body>
-<%@include file="/WEB-INF/common/header.jsp" %>
+<%@include file="/WEB-INF/page/common/header.jsp" %>
 <h2>${requestScope.update_operate?'更新':'添加' }学生</h2>
 	<form action="${ctx }/student/student-add" method ="post">
 		<input type="hidden" name="id" value="${student.id }"/>

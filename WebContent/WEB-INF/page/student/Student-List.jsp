@@ -34,7 +34,7 @@
 </script>
 </head>
 <body>
-<%@include file="/WEB-INF/common/header.jsp" %>
+<%@include file="/WEB-INF/page/common/header.jsp" %>
 	<div>
 		<form action="${ctx }/student/student-list" method="get">
 			<input type="hidden" id = "currentPage" name="currentPage" value="${page.currentPage }"/> 

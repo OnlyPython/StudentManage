@@ -12,7 +12,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import dao.DaoException;
 import entity.Student;
+import service.ServiceException;
 import service.StudentService;
 
 /**
@@ -40,26 +42,31 @@ public class StudentAddServlet extends HttpServlet {
 		String email = request.getParameter("email");
 		
 		Student student = new Student(id,name,age,email);
-		boolean isSuccess = this.studentService.saveOrUpdateStudent(student);
-		
 		response.setContentType("text/html");
 		response.setCharacterEncoding("utf-8");
 		PrintWriter writer = response.getWriter();
-		if(isSuccess){
+		try {
+			this.studentService.saveOrUpdateStudent(student);
 			response.sendRedirect(request.getServletContext().getAttribute("ctx")+"/student/student-list");	
-		}else{
-			logger.error("保存失败");
+		} catch (ServiceException | DaoException e) {
+			logger.error("Servlet 发生异常！", e);
 			writer.println("保存失败<br/>");
+			writer.println("<a href = \"addStudent.html\">添加页面</a>");
 		}
-		writer.println("<a href = \"addStudent.html\">添加页面</a>");
+		
 	}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String id_str = request.getParameter("id");
+		// 如果请求中传id，更新学生信息。
+		// 如果不传id，新增学生信息。
 		if(StringUtils.isNotBlank(id_str)){
 			Integer id = Integer.valueOf(id_str);
 			Student student = this.studentService.getById(id);
 			request.setAttribute("student", student);
+			// 让页面知道现在的操作是更新
 			request.setAttribute("update_operate", true);
+		}else{
+			request.setAttribute("update_operate", false);
 		}
 		request.getServletContext().getRequestDispatcher("/WEB-INF/page/student/Student-Add.jsp").forward(request, response);
 	}

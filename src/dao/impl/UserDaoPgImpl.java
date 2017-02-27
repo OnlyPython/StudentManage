@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import dao.DaoException;
 import dao.UserDao;
 import entity.User;
 import utils.DbSource;
@@ -33,7 +34,7 @@ public class UserDaoPgImpl implements UserDao {
 				user = new User(id,userName2,realName,password);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DaoException("Dao 发生异常！", e);
 		}
 		return user;
 	}

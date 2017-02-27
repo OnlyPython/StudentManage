@@ -9,9 +9,10 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import dao.DaoException;
 import dao.StudentDao;
-import utils.DbSource;
 import entity.Student;
+import utils.DbSource;
 
 public class StudentDaoPgImpl implements StudentDao {
 	private DbSource dbs;
@@ -39,7 +40,7 @@ public class StudentDaoPgImpl implements StudentDao {
 				result = true;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DaoException("sql异常", e);
 		}finally{
 			if(con != null){
 				try {

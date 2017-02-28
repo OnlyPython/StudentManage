@@ -14,7 +14,7 @@ import entity.User;
 import utils.DbSource;
 import utils.DbSourceImpl;
 
-@Repository("userDao")
+//@Repository("userDao")
 public class UserDaoPgImpl implements UserDao {
 	@Autowired
 	private DbSource dbs = new DbSourceImpl();

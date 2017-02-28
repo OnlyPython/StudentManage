@@ -16,7 +16,7 @@ import dao.StudentDao;
 import entity.Student;
 import utils.DbSource;
 
-@Repository("studentDao")
+//@Repository("studentDao")
 public class StudentDaoPgImpl implements StudentDao {
 	@Autowired
 	private DbSource dbs;

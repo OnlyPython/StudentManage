@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import dao.DaoException;
@@ -29,7 +27,7 @@ public class StudentAddServlet extends HttpServlet {
 	@Resource
     private StudentService studentService;
     
-    private static Logger logger = LoggerFactory.getLogger(StudentAddServlet.class);
+//    private static Logger logger = LoggerFactory.getLogger(StudentAddServlet.class);
     
 	public void setStudentService(StudentService studentService) {
 		this.studentService = studentService;
@@ -53,7 +51,7 @@ public class StudentAddServlet extends HttpServlet {
 			this.studentService.saveOrUpdateStudent(student);
 			response.sendRedirect(request.getServletContext().getAttribute("ctx")+"/student/student-list");	
 		} catch (ServiceException | DaoException e) {
-			logger.error("Servlet 发生异常！", e);
+//			logger.error("Servlet 发生异常！", e);
 			writer.println("保存失败<br/>");
 			writer.println("<a href = \"addStudent.html\">添加页面</a>");
 		}

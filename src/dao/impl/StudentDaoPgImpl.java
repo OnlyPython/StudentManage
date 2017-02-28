@@ -9,22 +9,21 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
 import dao.DaoException;
 import dao.StudentDao;
 import entity.Student;
-import utils.DbSource;
+import utils.TransactionalAspect;
 
 //@Repository("studentDao")
 public class StudentDaoPgImpl implements StudentDao {
 	@Autowired
-	private DbSource dbs;
-	public DbSource getDbs() {
+	private TransactionalAspect dbs;
+	public TransactionalAspect getDbs() {
 		return dbs;
 	}
 	@Override
-	public void setDbSource(DbSource dbSource) {
+	public void setDbSource(TransactionalAspect dbSource) {
 		this.dbs = dbSource;
 	}
 	@Override
@@ -45,16 +44,7 @@ public class StudentDaoPgImpl implements StudentDao {
 			}
 		} catch (SQLException e) {
 			throw new DaoException("sql异常", e);
-		}finally{
-			if(con != null){
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
 		}
-		
 		return result;
 	}
 
@@ -85,14 +75,6 @@ public class StudentDaoPgImpl implements StudentDao {
 			pst.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally{
-			if(con != null){
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 	}
 
@@ -124,14 +106,6 @@ public class StudentDaoPgImpl implements StudentDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally{
-			if(con != null){
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 		return studentList;
 	}
@@ -150,14 +124,6 @@ public class StudentDaoPgImpl implements StudentDao {
 			pst.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally{
-			if(con != null){
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 	}
 
@@ -185,14 +151,6 @@ public class StudentDaoPgImpl implements StudentDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally{
-			if(con != null){
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 		return result;
 	}
@@ -216,14 +174,6 @@ public class StudentDaoPgImpl implements StudentDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally{
-			if(con != null){
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 		return stu;
 	}

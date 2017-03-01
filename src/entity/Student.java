@@ -14,6 +14,9 @@ public class Student {
 		this.email = email;
 	}
 	
+	public Student() {
+	}
+
 	public Integer getId() {
 		return id;
 	}

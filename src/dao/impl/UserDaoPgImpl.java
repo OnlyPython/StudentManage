@@ -4,46 +4,45 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
-import javax.sql.DataSource;
+import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.stereotype.Repository;
 
 import dao.DaoException;
 import dao.UserDao;
+import entity.Student;
 import entity.User;
 
-//@Repository("userDao")
+@Repository("userDao")
 public class UserDaoPgImpl implements UserDao {
-	@Autowired
-	private DataSource dataSource;
-	@Override
-	public void setDbSource(DataSource dbSource) {
-		this.dataSource = dbSource;
-	} 
+	@Resource
+	private JdbcTemplate jdbcTemplate;
+	
+	RowMapper<User> userRowMapper = new RowMapper<User>() {
+		@Override
+		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+			User user = new User();
+			user.setId(rs.getInt("id"));
+			user.setUserName(rs.getString("user_name"));
+			user.setRealName(rs.getString("real_name"));
+			user.setPassword(rs.getString("password"));
+			return user;
+		}
+	};
+	
 	@Override
 	public User findUserByUserName(String userName) {
-		User user=null;
-		try {
-			Connection con = DataSourceUtils.getConnection(dataSource);
-			String sql = "select * from users u where u.user_name = ?";
-			PreparedStatement prepareStatement = (PreparedStatement) con.prepareStatement(sql);
-			prepareStatement.setString(1, userName);
-			ResultSet rs = prepareStatement.executeQuery();
-			if(rs.next()){
-				Integer id = rs.getInt("id");
-				String userName2 = rs.getString("user_name");
-				String realName = rs.getString("real_name");
-				String password = rs.getString("password");
-				user = new User(id,userName2,realName,password);
-			}
-		} catch (SQLException e) {
-			throw new DaoException("Dao 发生异常！", e);
+		String sql = "select * from users u where u.user_name = ?";
+		List<User> userList = jdbcTemplate.query(sql, userRowMapper, userName);
+		if(userList.size()==0){
+			return null;
 		}
-		return user;
+		return userList.get(0);
 	}
-
-	
 
 }

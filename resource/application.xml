@@ -18,6 +18,8 @@
 	
 	<!-- 获取properies文件路径，可以有多个配置文件，使用逗号隔开 -->
 	<context:property-placeholder location="common.properties"/>
+	<!-- 使用JdbcTemplate作为orm -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" p:dataSource-ref="dataSource"></bean>
 	
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="${db.driver}"/>
@@ -27,6 +29,6 @@
 	</bean>
 	<context:component-scan base-package="/"></context:component-scan>
 	<!-- 使用配置文件的方式配置Dao（易变的对象使用配置文件的方式加入到对象工厂，jar智能使用配置文件的方式） -->
-	<bean id="studentDao" class="dao.impl.StudentDaoPgImpl" p:dbSource-ref="dataSource"></bean>
-	<bean id="userDao" class="dao.impl.UserDaoPgImpl" p:dbSource-ref="dataSource"></bean>
+	<!-- <bean id="studentDao" class="dao.impl.StudentDaoPgImpl" p:dbSource-ref="dataSource"></bean>
+	<bean id="userDao" class="dao.impl.UserDaoPgImpl" p:dbSource-ref="dataSource"></bean> -->
 </beans>

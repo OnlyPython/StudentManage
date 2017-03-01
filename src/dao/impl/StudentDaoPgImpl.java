@@ -4,184 +4,96 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
+import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.stereotype.Repository;
 
-import dao.DaoException;
 import dao.StudentDao;
 import entity.Student;
 
-//@Repository("studentDao")
+@Repository("studentDao")
 public class StudentDaoPgImpl implements StudentDao {
-	@Autowired
-	private DataSource dataSource;
-	public DataSource getDbs() {
-		return dataSource;
-	}
-	@Override
-	public void setDbSource(DataSource dbSource) {
-		this.dataSource = dbSource;
-	}
+	@Resource
+	private JdbcTemplate jdbcTemplate;
+	
+//	实现RowMapper接口，定义类与查询结果集的映射关系
+	private RowMapper<Student> stuRowMapper = new RowMapper<Student>() {
+		@Override
+		public Student mapRow(ResultSet rs, int rowNum) throws SQLException {
+			Student student = new Student();
+			student.setId(rs.getInt("id"));
+			student.setName(rs.getString("name"));
+			student.setAge(rs.getInt("age"));
+			student.setEmail(rs.getString("email"));
+			return student;
+		}
+	};
+	
 	@Override
 	public boolean isEntityExists(String name) {
-		boolean result = false;
-		Connection con =null;	
-		try {
-			//2. 取得Connection
-			con = DataSourceUtils.getConnection(dataSource);
-			String sql = "select id from student s where s.name = ?";
-			//3.创建PreparedStatement
-			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setString(1, name);
-			//4. 取得ResultSet
-			ResultSet rs = pst.executeQuery();
-			if(rs.next()){
-				result = true;
-			}
-		} catch (SQLException e) {
-			throw new DaoException("sql异常", e);
-		}
-		return result;
+		String sql = "select count(*) from student s where s.name = ?";
+//		queryForOjbect方法必须返回至少一个结果，否则回抛出异常,
+		return jdbcTemplate.queryForObject(sql, Integer.class, name) != 0;
 	}
 
 	@Override
 	public void saveOrUpdateEntity(Student student) {
-		Connection con=null;
-		try {
-			//2. 取得Connection
-			con = DataSourceUtils.getConnection(dataSource);
-			String sql = "";
-			PreparedStatement pst = null;
-			if(student.getId()==null){
-				sql = "insert into student(name,age,email) values(?,?,?)";
-				//3.创建PreparedStatement
-				pst = con.prepareStatement(sql);
-				pst.setString(1, student.getName());
-				pst.setInt(2, student.getAge());
-				pst.setString(3, student.getEmail());
-			}else{
-				sql = "update student set name=?,age=?,email=? where id=?";
-				pst = con.prepareStatement(sql);
-				pst.setString(1, student.getName());
-				pst.setInt(2, student.getAge());
-				pst.setString(3, student.getEmail());
-				pst.setInt(4, student.getId());
-			}
-			//4. 取得ResultSet
-			pst.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		String sql;
+		Object[] args;
+		if(student.getId()==null){
+			sql = "insert into student(name,age,email) values(?,?,?)";
+			args = new Object[]{student.getName(), student.getAge(), student.getEmail()};
+		}else{
+			sql = "update student set name=?,age=?,email=? where id=?";
+			args = new Object[]{student.getName(), student.getAge(), student.getEmail(), student.getId()};
 		}
+		jdbcTemplate.update(sql, args);
 	}
 
 
 	@Override
 	public List<Student> searchByName(String studentName,int offset,int numPerPage) {
-		List<Student> studentList = new ArrayList<>();
-		Connection con=null;
 		if(StringUtils.isBlank(studentName)){
 			studentName = "%";
 		}else{
 			studentName = "%" +studentName.trim() + "%";
 		}
-		
-		try {
-			//2. 取得Connection
-			con = DataSourceUtils.getConnection(dataSource);
-			String sql = "select id,name,age,email from student where name like ? limit ? offset ?";
-			//3.创建PreparedStatement
-			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setString(1, studentName);
-			pst.setInt(2,numPerPage);
-			pst.setInt(3,offset);
-			//4. 取得ResultSet
-			ResultSet rs = pst.executeQuery();
-			while(rs.next()){
-				Student stu = new Student(rs.getInt("id"),rs.getString("name"),rs.getInt("age"),rs.getString("email"));
-				studentList.add(stu);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return studentList;
+		String sql = "select id,name,age,email from student where name like ? limit ? offset ?";
+		Object[] args = new Object[]{studentName, numPerPage, offset};
+		return jdbcTemplate.query(sql, args, stuRowMapper);
 	}
 
 	@Override
 	public void deleteById(Integer id) {
-		Connection con=null;
-		try {
-			//2. 取得Connection
-			con = DataSourceUtils.getConnection(dataSource);
-			String sql = "delete from student where id = ?";
-			//3.创建PreparedStatement
-			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setInt(1,id);
-			//4. 取得ResultSet
-			pst.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		String sql = "delete from student where id = ?";
+		jdbcTemplate.update(sql, id);
 	}
 
 	@Override
 	public int getTotalNum(String studentName) {
-		int result = 0;
-		Connection con=null;
-		if(studentName == null || "".endsWith(studentName.trim())){
+		if(StringUtils.isBlank(studentName)){
 			studentName = "%";
 		}else{
 			studentName = "%" +studentName.trim() + "%";
 		}
-		
-		try {
-			//2. 取得Connection
-			con = DataSourceUtils.getConnection(dataSource);
-			String sql = "select count(*) from student where name like ? ";
-			//3.创建PreparedStatement
-			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setString(1, studentName);
-			//4. 取得ResultSet
-			ResultSet rs = pst.executeQuery();
-			if(rs.next()){
-				result = rs.getInt(1);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return result;
+		String sql = "select count(*) from student where name like ?";
+		return jdbcTemplate.queryForObject(sql, Integer.class, studentName);
 	}
 
 	@Override
 	public Student getById(Integer id) {
-		Student stu = null;
-		Connection con=null;
-		
-		try {
-			//2. 取得Connection
-			con = DataSourceUtils.getConnection(dataSource);
-			String sql = "select id,name,age,email from student where id = ?";
-			//3.创建PreparedStatement
-			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setInt(1,id);
-			//4. 取得ResultSet
-			ResultSet rs = pst.executeQuery();
-			if(rs.next()){
-				stu = new Student(rs.getInt("id"),rs.getString("name"),rs.getInt("age"),rs.getString("email"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		String sql = "select id,name,age,email from student where id = ?";
+		List<Student> stuList = jdbcTemplate.query(sql, stuRowMapper, id);
+		if(stuList.size()==0){
+			return null;
 		}
-		return stu;
+		return stuList.get(0);
 	}
-
-	
-
-	
 
 }

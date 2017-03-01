@@ -7,7 +7,6 @@ import javax.sql.DataSource;
 import entity.Student;
 
 public interface StudentDao {
-	void setDbSource(DataSource dbSource);
 	boolean isEntityExists(String name);
 	void saveOrUpdateEntity(Student student);
 	

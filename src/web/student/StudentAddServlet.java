@@ -53,7 +53,7 @@ public class StudentAddServlet extends HttpServlet {
 		} catch (ServiceException | DaoException e) {
 //			logger.error("Servlet 发生异常！", e);
 			writer.println("保存失败<br/>");
-			writer.println("<a href = \"addStudent.html\">添加页面</a>");
+			writer.println("<a href = \"student-add\">添加页面</a>");
 		}
 		
 	}

@@ -2,11 +2,12 @@ package dao;
 
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import entity.Student;
-import utils.TransactionalAspect;
 
 public interface StudentDao {
-	void setDbSource(TransactionalAspect dbSource);
+	void setDbSource(DataSource dbSource);
 	boolean isEntityExists(String name);
 	void saveOrUpdateEntity(Student student);
 	

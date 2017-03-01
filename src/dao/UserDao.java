@@ -1,10 +1,11 @@
 package dao;
 
+import javax.sql.DataSource;
+
 import entity.User;
-import utils.TransactionalAspect;
 
 public interface UserDao {
-	void setDbSource(TransactionalAspect dbSource);
+	void setDbSource(DataSource dbSource);
 	public User findUserByUserName(String userName);
 
 }

@@ -5,26 +5,28 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 
 import dao.DaoException;
 import dao.UserDao;
 import entity.User;
-import utils.TransactionalAspect;
 
 //@Repository("userDao")
 public class UserDaoPgImpl implements UserDao {
 	@Autowired
-	private TransactionalAspect dbs;
+	private DataSource dataSource;
 	@Override
-	public void setDbSource(TransactionalAspect dbSource) {
-		this.dbs = dbSource;
+	public void setDbSource(DataSource dbSource) {
+		this.dataSource = dbSource;
 	} 
 	@Override
 	public User findUserByUserName(String userName) {
 		User user=null;
 		try {
-			Connection con = dbs.getConnection();
+			Connection con = DataSourceUtils.getConnection(dataSource);
 			String sql = "select * from users u where u.user_name = ?";
 			PreparedStatement prepareStatement = (PreparedStatement) con.prepareStatement(sql);
 			prepareStatement.setString(1, userName);

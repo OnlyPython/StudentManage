@@ -23,12 +23,11 @@ public class StudentService {
 		this.studentDao = studentDao;
 	}
 
-	public boolean saveOrUpdateStudent(Student student){
+	public void saveOrUpdateStudent(Student student){
 		if(student.getId()==null&&studentDao.isEntityExists(student.getName())){
-			return false;
+			throw new ServiceException("该名学生（姓名）已存在！");
 		}else{
 			this.studentDao.saveOrUpdateEntity(student);
-			return true;
 		}
 	}
 	public Page<Student> searchByName(){

@@ -7,24 +7,26 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 
 import dao.DaoException;
 import dao.StudentDao;
 import entity.Student;
-import utils.TransactionalAspect;
 
 //@Repository("studentDao")
 public class StudentDaoPgImpl implements StudentDao {
 	@Autowired
-	private TransactionalAspect dbs;
-	public TransactionalAspect getDbs() {
-		return dbs;
+	private DataSource dataSource;
+	public DataSource getDbs() {
+		return dataSource;
 	}
 	@Override
-	public void setDbSource(TransactionalAspect dbSource) {
-		this.dbs = dbSource;
+	public void setDbSource(DataSource dbSource) {
+		this.dataSource = dbSource;
 	}
 	@Override
 	public boolean isEntityExists(String name) {
@@ -32,7 +34,7 @@ public class StudentDaoPgImpl implements StudentDao {
 		Connection con =null;	
 		try {
 			//2. 取得Connection
-			con = dbs.getConnection();
+			con = DataSourceUtils.getConnection(dataSource);
 			String sql = "select id from student s where s.name = ?";
 			//3.创建PreparedStatement
 			PreparedStatement pst = con.prepareStatement(sql);
@@ -53,7 +55,7 @@ public class StudentDaoPgImpl implements StudentDao {
 		Connection con=null;
 		try {
 			//2. 取得Connection
-			con = dbs.getConnection();
+			con = DataSourceUtils.getConnection(dataSource);
 			String sql = "";
 			PreparedStatement pst = null;
 			if(student.getId()==null){
@@ -91,7 +93,7 @@ public class StudentDaoPgImpl implements StudentDao {
 		
 		try {
 			//2. 取得Connection
-			con = dbs.getConnection();
+			con = DataSourceUtils.getConnection(dataSource);
 			String sql = "select id,name,age,email from student where name like ? limit ? offset ?";
 			//3.创建PreparedStatement
 			PreparedStatement pst = con.prepareStatement(sql);
@@ -115,7 +117,7 @@ public class StudentDaoPgImpl implements StudentDao {
 		Connection con=null;
 		try {
 			//2. 取得Connection
-			con = dbs.getConnection();
+			con = DataSourceUtils.getConnection(dataSource);
 			String sql = "delete from student where id = ?";
 			//3.创建PreparedStatement
 			PreparedStatement pst = con.prepareStatement(sql);
@@ -139,7 +141,7 @@ public class StudentDaoPgImpl implements StudentDao {
 		
 		try {
 			//2. 取得Connection
-			con = dbs.getConnection();
+			con = DataSourceUtils.getConnection(dataSource);
 			String sql = "select count(*) from student where name like ? ";
 			//3.创建PreparedStatement
 			PreparedStatement pst = con.prepareStatement(sql);
@@ -162,7 +164,7 @@ public class StudentDaoPgImpl implements StudentDao {
 		
 		try {
 			//2. 取得Connection
-			con = dbs.getConnection();
+			con = DataSourceUtils.getConnection(dataSource);
 			String sql = "select id,name,age,email from student where id = ?";
 			//3.创建PreparedStatement
 			PreparedStatement pst = con.prepareStatement(sql);

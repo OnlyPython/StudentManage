@@ -1,2 +1,3 @@
 # StudentManage
-基于SSH的学生信息管理系统
+
+基于Spring MVC, Spring, JdbcTemplate的学生信息管理系统

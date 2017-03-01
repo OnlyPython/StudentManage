@@ -9,10 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import dao.StudentDao;
 import entity.Student;
+import suport.NoTX;
+import suport.OpenTX;
 import utils.Page;
 
 @Service
-@Transactional(readOnly=false)
+@OpenTX
 public class StudentService {
 	@Resource
 	private StudentDao studentDao;
@@ -32,13 +34,13 @@ public class StudentService {
 			this.studentDao.saveOrUpdateEntity(student);
 		}
 	}
-	@Transactional(readOnly=true)
+	@NoTX
 	public Page<Student> searchByName(){
 		int currentPage = Page.DEFAULT_CURRENT_PAGE;
 		int numPerPage = Page.DEFAULT_NUM_PER_PAGE;
 		return this.searchByName(null, currentPage, numPerPage);
 	}
-	@Transactional(readOnly=true)
+	@NoTX
 	public Page<Student> searchByName(String studentName,int currentPage,int numPerPage) {
 		int totalNum = this.studentDao.getTotalNum(studentName);
 		Page<Student> page = new Page<>(currentPage,numPerPage,totalNum);
@@ -49,7 +51,7 @@ public class StudentService {
 	public void deleteById(Integer id) {
 		this.studentDao.deleteById(id);
 	}
-	@Transactional(readOnly=true)
+	@NoTX
 	public Student getById(Integer id) {
 		return this.studentDao.getById(id);
 	}

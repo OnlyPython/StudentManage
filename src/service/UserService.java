@@ -8,9 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import dao.UserDao;
 import entity.User;
+import suport.NoTX;
 
 @Service
-@Transactional(readOnly=true)
+@NoTX
 public class UserService {
 	@Resource
 	private UserDao userDao;
